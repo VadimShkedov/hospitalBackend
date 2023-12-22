@@ -4,6 +4,7 @@ const userSchema = new Schema({
   login: {
     type: String,
     required: true,
+    unique: true
   },
   password: {
     type: String,
@@ -11,4 +12,4 @@ const userSchema = new Schema({
   }
 });
 
-module.exports = Token = model("User", userSchema);
+module.exports = User = model("Users", userSchema);
