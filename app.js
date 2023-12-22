@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
 const express = require('express');
 
-const router = require('./routes/index');
+const router = require('./routes/user');
 const { DB_CONNECTION, PORT } = require('./config');
 
 const app = express();
+app.use(express.json());
 app.use('/', router)
 
 const startApp = async () => {
