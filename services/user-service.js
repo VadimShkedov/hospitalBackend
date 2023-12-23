@@ -1,25 +1,26 @@
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
 
 const User = require('../models/user-model');
-const Token = require('../models/token-model');
-const UserDto = require('../dtos/user-dto')
-const { generateTokens } = require('./token-service');
+const UserDto = require('../dtos/user-dto');
+const { generateTokens, saveToken } = require('./token-service');
+const ApiError = require('../exceptions/api-errors');
 
 const registrationService = async (login, password) => {
   const candidate = await User.findOne({ login });
 
-  if (!candidate) {
-    const hashedPassword = await bcrypt.hash(password, 3);
-
-    const savedUser = await User.create({ login, password: hashedPassword });
-
-    const user = new UserDto(savedUser);
-    const tokens = generateTokens(user);
-
-    await Token.create({ userId: savedUser._id, token: tokens.refresh_token });
-
-    return { user, tokens }
+  if (candidate) {
+    throw ApiError.BadRequest("Пользователь уже существует");
   }
+
+  const hashedPassword = await bcrypt.hash(password, 3);
+  const savedUser = await User.create({ login, password: hashedPassword });
+
+  const user = new UserDto(savedUser);
+  const tokens = generateTokens({...user});
+
+  await saveToken(user.id, tokens.refresh_token);
+
+  return { user, tokens }
 }
 
 module.exports = registrationService;

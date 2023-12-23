@@ -1,15 +1,27 @@
-const User = require('../models/user-model')
-const registrationService = require('../services/user-service')
+const { validationResult } = require('express-validator');
 
-const registration = async (req, res) => {
-  const { login, password } = req.body;
-  const response = await registrationService(login, password);
+const registrationService = require('../services/user-service');
+const ApiError = require('../exceptions/api-errors');
 
-  res.setCookie()
+const registrationController = async (req, res, next) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(ApiError.BadRequest('Ошибка валидации при регистрации', errors.array()));
+    }
 
-  res.status(200).json({
-    access_token: response.tokens.access_token
-  });
+    const { login, password } = req.body;
+    const { user, tokens } = await registrationService(login, password);
+
+    res.cookie('refreshToken', tokens.refresh_token, { maxAge: 2592000000, httpOnly: true });
+
+    return res.status(200).json({
+      userInfo: user,
+      access_token: tokens.access_token
+    });
+  } catch (error) {
+    next(error);
+  } 
 }
 
-module.exports = { registration };
+module.exports = { registrationController };

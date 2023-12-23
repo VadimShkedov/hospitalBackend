@@ -2,17 +2,19 @@ const mongoose = require('mongoose');
 const express = require('express');
 
 const router = require('./routes/user');
+const errorMiddleware = require('./middlewares/error-middleware');
 const { DB_CONNECTION, PORT } = require('./config');
 
 const app = express();
 app.use(express.json());
-app.use('/', router)
+app.use('/', router);
+app.use(errorMiddleware);
 
 const startApp = async () => {
   try {
     await mongoose.connect(DB_CONNECTION);
 
-    app.listen(PORT, () => console.log(`Порт: ${PORT}`))
+    app.listen(PORT, () => console.log(`Порт: ${PORT}`));
   } catch (error) {
     console.error(error);
     process.exit(1);
