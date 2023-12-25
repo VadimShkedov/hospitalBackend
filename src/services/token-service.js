@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
-const { SECRET_ACCESS_KEY, SECRET_REFRESH_KEY } = require('../config');
-const { MAX_REFRESH_TOKEN_LIFETIME, MAX_ACCESS_TOKEN_LIFETIME } = require('../constants')
+const { SECRET_ACCESS_KEY, SECRET_REFRESH_KEY } = require('../../config');
+const { MAX_REFRESH_TOKEN_LIFETIME, MAX_ACCESS_TOKEN_LIFETIME } = require('../../constants');
 const Token = require('../models/token-model');
 
 const generateTokens = (payload) => {
@@ -15,7 +15,7 @@ const generateTokens = (payload) => {
 }
 
 const saveRefreshToken = async (userId, token) => {
-  const candidateToken = await Token.findByIdAndUpdate(userId, { token, userId })
+  const candidateToken = await Token.findByIdAndUpdate(userId, { token });
 
   if (!candidateToken) {
     await Token.create({ token, userId });

@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const express = require('express');
 
-const router = require('./routes/user');
-const errorMiddleware = require('./middlewares/error-middleware');
+const router = require('./src/routes/user');
+const errorMiddleware = require('./src/middlewares/error-middleware');
 const { DB_CONNECTION, PORT } = require('./config');
 
 const app = express();

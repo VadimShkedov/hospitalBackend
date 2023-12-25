@@ -1,5 +1,5 @@
 const { body } = require('express-validator');
-const registrationValidationResult = require('./registration-validation-result');
+const validatorResult = require('./registration-validation-result');
 
 const registrationValidation = [
   body('login')
@@ -10,7 +10,7 @@ const registrationValidation = [
     .isString()
     .isLength({ min: 6 })
     .matches(/^[a-zA-Z]+\d+$/),
-  registrationValidationResult
+  validatorResult
 ];
 
 module.exports = registrationValidation;

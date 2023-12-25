@@ -7,7 +7,6 @@ const tokenSchema = new Schema({
   },
   userId: {
     type: Schema.Types.ObjectId,
-    required: true,
     unique: true
   }
 });
