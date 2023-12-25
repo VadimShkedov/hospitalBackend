@@ -1,27 +1,17 @@
-const { validationResult } = require('express-validator');
-
 const registrationService = require('../services/user-service');
-const ApiError = require('../exceptions/api-errors');
+const { MAX_REFRESH_TOKEN_LIFETIME } = require('../constants')
 
-const registrationController = async (req, res, next) => {
+const registration = async (req, res, next) => {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return next(ApiError.BadRequest('Ошибка валидации при регистрации', errors.array()));
-    }
-
     const { login, password } = req.body;
-    const { user, tokens } = await registrationService(login, password);
+    const newUser = await registrationService(login, password);
 
-    res.cookie('refreshToken', tokens.refresh_token, { maxAge: 2592000000, httpOnly: true });
+    res.cookie('refreshToken', newUser.tokens.refreshToken, { maxAge: MAX_REFRESH_TOKEN_LIFETIME, httpOnly: true });
 
-    return res.status(200).json({
-      userInfo: user,
-      access_token: tokens.access_token
-    });
+    return res.status(200).json(newUser);
   } catch (error) {
     next(error);
   } 
 }
 
-module.exports = { registrationController };
+module.exports = { registration };
