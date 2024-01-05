@@ -1,13 +1,15 @@
-const mongoose = require('mongoose');
 const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors')
 
-const router = require('./src/routes/user');
+const { userRouter } = require('./src/routes');
 const errorMiddleware = require('./src/middlewares/error-middleware');
 const { DB_CONNECTION, PORT } = require('./config');
 
 const app = express();
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }))
 app.use(express.json());
-app.use('/', router);
+app.use('/', userRouter);
 app.use(errorMiddleware);
 
 const startApp = async () => {

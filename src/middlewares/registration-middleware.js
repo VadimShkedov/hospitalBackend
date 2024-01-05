@@ -8,8 +8,7 @@ const registrationValidation = [
     .isLength({ min: 6 }),
   body('password')
     .isString()
-    .isLength({ min: 6 })
-    .matches(/^[a-zA-Z]+\d+$/),
+    .matches(/^(?=.*[a-zA-Z])(?=.*\d).{6,}$/),
   validatorResult
 ];
 
