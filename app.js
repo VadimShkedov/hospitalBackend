@@ -4,7 +4,7 @@ const cors = require('cors');
 const { userRouter } = require('./src/routes');
 const errorMiddleware = require('./src/middlewares/error-middleware');
 const { DB_CONNECTION, PORT } = require('./config');
-const { CORS_OPTIONS } = require('./constants')
+const { CORS_OPTIONS } = require('./config')
 
 const app = express();
 app.use(cors(CORS_OPTIONS));
