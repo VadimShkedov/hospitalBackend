@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-
 const { SECRET_ACCESS_KEY, SECRET_REFRESH_KEY } = require('../../config');
 const { MAX_REFRESH_TOKEN_LIFETIME, MAX_ACCESS_TOKEN_LIFETIME } = require('../../constants');
 const Token = require('../models/token-model');

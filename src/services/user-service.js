@@ -1,5 +1,4 @@
 const bcrypt = require('bcrypt');
-
 const User = require('../models/user-model');
 const UserDto = require('../dtos/user-dto');
 const { generateTokens, saveRefreshToken } = require('./token-service');

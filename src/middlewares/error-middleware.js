@@ -7,5 +7,5 @@ module.exports = (err, req, res, next) => {
     return res.status(code).json({ message });
   }
 
-  return res.status(500).json({ message: 'Непредвиденная ошибка' });
+  res.status(500).json({ message: 'Непредвиденная ошибка' });
 }
