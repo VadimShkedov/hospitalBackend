@@ -7,7 +7,7 @@ const { DB_CONNECTION, PORT } = require('./config');
 const { CORS_OPTIONS } = require('./constants')
 
 const app = express();
-app.use(cors(CORS_OPTIONS))
+app.use(cors(CORS_OPTIONS));
 app.use(express.json());
 app.use('/', userRouter);
 app.use(errorMiddleware);
